@@ -1,5 +1,5 @@
 require 'time'
-module Hushed
+module Gentle
   module Documents
     module Response
       class ShipmentOrderResult

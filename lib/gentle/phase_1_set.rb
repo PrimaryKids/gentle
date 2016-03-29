@@ -1,4 +1,4 @@
-module Hushed
+module Gentle
   class Phase1Set
 
     SKUS = {

@@ -1,12 +1,12 @@
 require 'spec_helper'
-require 'hushed/documents/request/shipment_order'
-require 'hushed/documents/request/hash_converter'
+require 'gentle/documents/request/shipment_order'
+require 'gentle/documents/request/hash_converter'
 
-module Hushed
+module Gentle
   module Documents
     module Request
       describe "ShipmentOrder" do
-        include Hushed::Documents::Request::HashConverter
+        include Gentle::Documents::Request::HashConverter
 
         it "serializes the line item parts into a hash" do
           part = PartLineItemDouble.example(

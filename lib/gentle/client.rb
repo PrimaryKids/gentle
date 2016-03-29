@@ -3,7 +3,7 @@ require 'aws/sqs'
 require 'active_support/core_ext/hash/slice'
 require 'active_support/core_ext/hash/indifferent_access'
 
-module Hushed
+module Gentle
   class Client
 
     class InitializationError < StandardError; end

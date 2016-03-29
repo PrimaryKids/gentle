@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'hushed'
-require 'hushed/blackboard'
+require 'gentle'
+require 'gentle/blackboard'
 
-module Hushed
+module Gentle
   describe "BlackboardRemote" do
     include Configuration
     include Fixtures

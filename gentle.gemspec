@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'hushed/version'
+require 'gentle/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "hushed"
-  spec.version       = Hushed::VERSION
-  spec.authors       = ["Chris Saunders"]
-  spec.email         = ["chris.saunders@shopify.com"]
+  spec.name          = "gentle"
+  spec.version       = Gentle::VERSION
+  spec.authors       = ["DynamoMTL"]
+  spec.email         = [""]
   spec.description   = "API Client for Quiet Logistics Services"
   spec.summary       = "Integrates with QL Blackboard and work Queue"
-  spec.homepage      = "http://github.com/csaunders/hushed"
+  spec.homepage      = "http://github.com/DynamoMTL/qls"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

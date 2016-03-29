@@ -1,4 +1,4 @@
-module Hushed
+module Gentle
   module Documents
     module DocumentInterfaceTestcases
 
@@ -36,7 +36,7 @@ module Hushed
         :date => Time.new(2013, 04, 05, 12, 30, 15).utc,
         :client => @client,
         :type => 'Thinger',
-        :business_unit => 'HUSHED',
+        :business_unit => 'Gentle',
         :document_number => '123456'
       )
     end

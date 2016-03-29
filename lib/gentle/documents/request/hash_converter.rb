@@ -1,4 +1,4 @@
-module Hushed
+module Gentle
   module Documents
     module Request
       module HashConverter

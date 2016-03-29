@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'nokogiri'
 require 'yaml'
 require 'mocha/setup'
-require 'hushed'
+require 'gentle'
 require 'pry'
 
 module Fixtures
@@ -21,7 +21,7 @@ end
 
 module Configuration
   def load_configuration
-    test_credentials_file = ENV['HOME'] + '/.hushed/credentials.yml'
+    test_credentials_file = ENV['HOME'] + '/.gentle/credentials.yml'
     test_credentials_file = "spec/fixtures/credentials.yml" unless File.exists?(test_credentials_file)
     YAML.load(File.open(test_credentials_file, 'rb'))
   end
@@ -282,7 +282,7 @@ class ShipmentDouble
 end
 
 class DocumentDouble
-  include Hushed::Documents::Document
+  include Gentle::Documents::Document
   attr_accessor :type, :message_id, :warehouse, :date, :client
   attr_accessor :business_unit, :document_number, :io
 

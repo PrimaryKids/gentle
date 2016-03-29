@@ -1,4 +1,4 @@
-module Hushed
+module Gentle
   class ErrorMessage
     attr_reader :xml
 

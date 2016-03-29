@@ -1,6 +1,6 @@
-require 'hushed/documents/response/shipment_order_result'
+require 'gentle/documents/response/shipment_order_result'
 
-module Hushed
+module Gentle
   module Response
     VALID_RESPONSE_TYPES = %w(ShipmentOrderResult)
 

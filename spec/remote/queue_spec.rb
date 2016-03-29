@@ -1,9 +1,9 @@
 require 'spec_helper'
 require 'openssl'
-require 'hushed'
-require 'hushed/message'
+require 'gentle'
+require 'gentle/message'
 
-module Hushed
+module Gentle
   describe "QueueRemote" do
     include Configuration
 

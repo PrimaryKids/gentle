@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'hushed/queue'
-require 'hushed/error_message'
+require 'gentle/queue'
+require 'gentle/error_message'
 
-module Hushed
+module Gentle
   describe "Queue" do
     include Fixtures
     before do
@@ -31,7 +31,7 @@ module Hushed
 
       received_message = @queue.receive
       assert_equal 'PurchaseOrder', received_message.document_type
-      assert_equal 'HUSHED_PurchaseOrder_1234_20100927_132505124.xml', received_message.document_name
+      assert_equal 'Gentle_PurchaseOrder_1234_20100927_132505124.xml', received_message.document_name
     end
 
     it "should return a message when receiving even if the queue did not return anything" do
@@ -46,7 +46,7 @@ module Hushed
       @sqs_queue.expects(:receive_message).yields(@message)
 
       received_message = @queue.receive
-      assert_instance_of Hushed::ErrorMessage, received_message
+      assert_instance_of Gentle::ErrorMessage, received_message
     end
 
     it "should be possible to get an approximate number of pending messages" do

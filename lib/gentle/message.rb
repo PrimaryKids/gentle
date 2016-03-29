@@ -1,4 +1,4 @@
-module Hushed
+module Gentle
   class Message
 
     NAMESPACE = "http://schemas.quietlogistics.com/V2/EventMessage.xsd"

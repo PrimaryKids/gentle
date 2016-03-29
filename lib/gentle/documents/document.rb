@@ -1,4 +1,4 @@
-module Hushed
+module Gentle
   module Documents
     module  Document
       DATEFORMAT = "%Y%m%d_%H%M%S"

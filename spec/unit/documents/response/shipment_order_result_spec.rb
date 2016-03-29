@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'hushed/documents/response/shipment_order_result'
+require 'gentle/documents/response/shipment_order_result'
 
-module Hushed
+module Gentle
   module Documents
     module Response
       describe "ShipmentOrderResult" do
@@ -11,8 +11,8 @@ module Hushed
           document = load_response('shipment_order_result')
           order_result = ShipmentOrderResult.new(io: document)
 
-          assert_equal 'HUSHED', order_result.client_id
-          assert_equal 'HUSHED', order_result.business_unit
+          assert_equal 'Gentle', order_result.client_id
+          assert_equal 'Gentle', order_result.business_unit
           assert_equal 1, order_result.carton_count
           assert_equal Time.new(2009, 9, 1, 0, 0, 0).utc, order_result.date_shipped
 

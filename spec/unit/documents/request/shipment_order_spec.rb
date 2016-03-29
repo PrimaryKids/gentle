@@ -1,16 +1,16 @@
 require 'spec_helper'
-require 'hushed/documents/request/shipment_order'
+require 'gentle/documents/request/shipment_order'
 
-module Hushed
+module Gentle
   module Documents
     module Request
       describe "ShipmentOrder" do
-        include Hushed::Documents::DocumentInterfaceTestcases
+        include Gentle::Documents::DocumentInterfaceTestcases
 
         before do
           @shipment = ShipmentDouble.example
           @order = @shipment.order
-          @client = ClientDouble.new(:client_id => 'HUSHED', :business_unit => 'HUSHED', :warehouse => 'SPACE')
+          @client = ClientDouble.new(:client_id => 'Gentle', :business_unit => 'Gentle', :warehouse => 'SPACE')
           @object = @shipment_order = ShipmentOrder.new(shipment: @shipment, client: @client)
         end
 

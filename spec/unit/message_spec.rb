@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'hushed/message'
+require 'gentle/message'
 
-module Hushed
+module Gentle
   describe "Message" do
     include Fixtures
     before do
@@ -32,7 +32,7 @@ module Hushed
       message = Message.new(:xml => load_message('purchase_order_message'))
 
       assert_equal 'PurchaseOrder', message.document_type
-      assert_equal 'HUSHED_PurchaseOrder_1234_20100927_132505124.xml', message.document_name
+      assert_equal 'Gentle_PurchaseOrder_1234_20100927_132505124.xml', message.document_name
     end
 
     it "should be able to generate an XML document" do
@@ -63,8 +63,8 @@ module Hushed
       )
 
       @client = ClientDouble.new(
-        client_id: 'HUSHED',
-        business_unit: 'HUSHED'
+        client_id: 'Gentle',
+        business_unit: 'Gentle'
       )
     end
   end

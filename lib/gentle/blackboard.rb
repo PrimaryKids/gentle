@@ -1,6 +1,6 @@
-require 'hushed/response'
-require 'hushed/request'
-module Hushed
+require 'gentle/response'
+require 'gentle/request'
+module Gentle
   class Blackboard
     attr_reader :client
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <EventMessage
   xmlns="http://schemas.quietlogistics.com/V2/EventMessage.xsd"
-  ClientId="HUSHED"
-  BusinessUnit="HUSHED"
-  DocumentName="HUSHED_PurchaseOrder_1234_20100927_132505124.xml"
+  ClientId="Gentle"
+  BusinessUnit="Gentle"
+  DocumentName="Gentle_PurchaseOrder_1234_20100927_132505124.xml"
   DocumentType="PurchaseOrder"
   MessageId="EF1CE966-38A2-428b-BA67-EFF23AF22F57"
   Warehouse="CORP1"

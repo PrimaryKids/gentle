@@ -1,26 +1,26 @@
 require 'spec_helper'
-require 'hushed/client'
+require 'gentle/client'
 require 'active_support/core_ext/hash/except'
 require 'active_support/core_ext/hash/keys'
 
-module Hushed
+module Gentle
   describe "Client" do
     before do
       AWS.config(:stub_requests => true)
       @options = {
         access_key_id: 'abracadabra',
         secret_access_key: 'alakazam',
-        client_id: 'HUSHED',
-        business_unit: 'HUSHED',
+        client_id: 'Gentle',
+        business_unit: 'Gentle',
         warehouse: 'SPACE',
         buckets: {
-          to: 'hushed-to-quiet',
-          from: 'hushed-from-quiet'
+          to: 'gentle-to-quiet',
+          from: 'gentle-from-quiet'
         },
         queues: {
-          to: 'http://queue.amazonaws.com/123456789/hushed_to_quiet',
-          from: 'http://queue.amazonaws.com/123456789/hushed_from_quiet',
-          inventory: 'http://queue.amazonaws.com/123456789/hushed_inventory'
+          to: 'http://queue.amazonaws.com/123456789/gentle_to_quiet',
+          from: 'http://queue.amazonaws.com/123456789/gentle_from_quiet',
+          inventory: 'http://queue.amazonaws.com/123456789/gentle_inventory'
         }
       }
       @client = Client.new(@options)
@@ -32,8 +32,8 @@ module Hushed
 
     it "should be able to handle configuration that is passed in with keys as strings" do
       client = Client.new(@options.stringify_keys)
-      assert_equal 'HUSHED', client.client_id
-      assert_equal 'HUSHED', client.business_unit
+      assert_equal 'Gentle', client.client_id
+      assert_equal 'Gentle', client.business_unit
     end
 
     it "should not be possible to initialize a client without credentials" do

@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'hushed/phase_1_set'
+require 'gentle/phase_1_set'
 
-module Hushed
-  describe "Hushed::Phase1Set" do
+module Gentle
+  describe "Gentle::Phase1Set" do
 
     it "checks if an item i a Phase 1" do
       assert Phase1Set.match(line_item("GPS1-5"))
@@ -10,7 +10,7 @@ module Hushed
     end
 
     it "returns a collection of items included in the Phase 1 Set" do
-      phase1Set = Hushed::Phase1Set.new(line_item("GPS1-5", 2))
+      phase1Set = Gentle::Phase1Set.new(line_item("GPS1-5", 2))
       items = phase1Set.included_items
 
       assert_equal 4, items.count

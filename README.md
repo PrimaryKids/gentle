@@ -1,12 +1,12 @@
-# Hushed
+# Gentle
 
-Client library for integrating with the [Quiet Logistics](http://quietlogistics.com) API 
+Client library for integrating with the [Quiet Logistics](http://quietlogistics.com) API
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'hushed'
+    gem 'gentle'
 
 And then execute:
 
@@ -14,37 +14,37 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install hushed
+    $ gem install gentle
 
 ## Usage
 
-Basic usage for Hushed goes as follows:
+Basic usage for Gentle goes as follows:
 
 
 ```ruby
-require 'hushed'
-require 'hushed/documents/request/shipment_order'
+require 'gentle'
+require 'gentle/documents/request/shipment_order'
 
 credentials = {
   access_key_id: 'AWS_ACCESS_KEY', secret_access_key: 'SECRET_ACCESS_KEY',
   client_id: 'QUIET CLIENT ID', business_unit: 'QUIET BUSINESS UNIT',
   warehouse: 'QUIET WAREHOUSE',
   buckets: {
-    to: 'hushed-to-quiet',
-    from: 'hushed-from-quiet'
+    to: 'gentle-to-quiet',
+    from: 'gentle-from-quiet'
   },
   queues: {
-    to: http://queue.amazonaws/1234567890/hushed_to_quiet
-    from: http://queue.amazonaws/1234567890/hushed_from_quiet
-    inventory: http://queue.amazonaws/1234567890/hushed_inventory
+    to: 'http://queue.amazonaws/1234567890/gentle_to_quiet'
+    from: 'http://queue.amazonaws/1234567890/gentle_from_quiet'
+    inventory: 'http://queue.amazonaws/1234567890/gentle_inventory'
   }
 }
-client = Hushed::Client.new(credentials)
-order = Order.new # Orders are expected to have similar attributes as ShopifyAPI::Order
-document = Hushed::Documents::Request::ShipmentOrder.new(client: client, order: order)
+client = Gentle::Client.new(credentials)
+# Orders are expected to have similar attributes as Spree/Solidus::Shipment
+document = Gentle::Documents::Request::ShipmentOrder.new(client: client, shipment: shipment)
 
-blackboard = Hushed::Blackboard.new(client)
-queue = Hushed::Queue.new(client)
+blackboard = Gentle::Blackboard.new(client)
+queue = Gentle::Queue.new(client)
 
 message = blackboard.post(document)
 queue.send(message)

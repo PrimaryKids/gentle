@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'hushed/error_message'
+require 'gentle/error_message'
 
-module Hushed
+module Gentle
   describe ErrorMessage do
     include Fixtures
 

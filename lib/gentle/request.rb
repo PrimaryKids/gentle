@@ -1,6 +1,6 @@
-require 'hushed/documents/request/shipment_order'
+require 'gentle/documents/request/shipment_order'
 
-module Hushed
+module Gentle
   module Request
     VALID_REQUEST_TYPES = %w(ShipmentOrder)
 

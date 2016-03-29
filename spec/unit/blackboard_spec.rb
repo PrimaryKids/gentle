@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'hushed/blackboard'
+require 'gentle/blackboard'
 
-module Hushed
+module Gentle
   module Documents
     module Response
       class ThingerResponse
@@ -23,7 +23,7 @@ module Hushed
   end
 end
 
-module Hushed
+module Gentle
   describe "Blackboard" do
     before do
       @bucket = mock()

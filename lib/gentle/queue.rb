@@ -1,4 +1,4 @@
-module Hushed
+module Gentle
   class Queue
     attr_reader :client
     def initialize(client)
