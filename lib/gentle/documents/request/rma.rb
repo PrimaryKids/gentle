@@ -1,0 +1,66 @@
+require 'forwardable'
+module Gentle
+  module Documents
+    module Request
+      class RMADocument
+        include Gentle::Documents::Document
+        extend Forwardable
+
+        NAMESPACE = "http://schemas.quietlogistics.com/V2/RMADocument.xsd"
+
+        DATEFORMAT = "%Y%m%d_%H%M%S"
+
+        class MissingOrderError < StandardError; end
+        class MissingClientError < StandardError; end
+
+        attr_reader :rma, :config, :name
+
+        # def_delegators :@client, :warehouse, :business_unit, :client_id
+
+        def initialize(options = {})
+          @config          = options.fetch(:config)
+          @rma             = options.fetch(:rma)
+          @order           = @rma.order
+          @name            = "RMA_#{@rma.number}_#{date_stamp}.xml"
+        end
+
+        def to_xml
+          builder = Nokogiri::XML::Builder.new do |xml|
+            xml.RMADocument('xmlns' => 'http://schemas.quietlogistics.com/V2/RMADocument.xsd') {
+
+
+              xml.RMA('ClientID'       => @config['client_id'],
+                      'BusinessUnit'   => @config['business_unit'],
+                      'RMANumber'      => @rma.number,
+                      'TrackingNumber' => @rma.tracking_number) {
+
+                @rma.return_items.each do |returned_item|
+                  xml.Line('LineNo'          => returned_item.inventory_unit.line_item_id,
+                           'OrderNumber'     => @order.number,
+                           'ItemNumber'      => returned_item.inventory_unit.variant.sku,
+                           'Quantity'        => returned_item.inventory_unit.line_item.quantity,
+                           'SaleUOM'         => 'EA', #Each
+                           'ReturnReason'    => @rma.reason.name,
+                           'CustomerComment' => ''
+                  )
+                end
+
+              }
+
+            }
+          end
+          builder.to_xml
+        end
+
+        def message
+          "Sent RMA #{@number} to QL"
+        end
+
+        def date_stamp
+          Time.now.strftime('%Y%m%d_%H%M%3N')
+        end
+
+      end
+    end
+  end
+end
