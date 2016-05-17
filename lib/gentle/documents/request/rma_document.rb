@@ -15,8 +15,6 @@ module Gentle
 
         attr_reader :rma, :config, :name
 
-        # def_delegators :@client, :warehouse, :business_unit, :client_id
-
         def initialize(options = {})
           @config          = options.fetch(:config)
           @rma             = options.fetch(:rma)
@@ -29,8 +27,8 @@ module Gentle
             xml.RMADocument('xmlns' => 'http://schemas.quietlogistics.com/V2/RMADocument.xsd') {
 
 
-              xml.RMA('ClientID'       => @config['client_id'],
-                      'BusinessUnit'   => @config['business_unit'],
+              xml.RMA('ClientID'       => @config[:client_id],
+                      'BusinessUnit'   => @config[:business_unit],
                       'RMANumber'      => @rma.number,
                       'TrackingNumber' => @rma.tracking_number) {
 
