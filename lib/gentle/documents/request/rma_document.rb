@@ -16,7 +16,7 @@ module Gentle
         attr_reader :rma, :config, :name
 
         def initialize(options = {})
-          @config          = options.fetch(:config)
+          @config          = options.fetch(:config).symbolize_keys
           @rma             = options.fetch(:rma)
           @order           = @rma.order
           @name            = "RMA_#{@rma.number}_#{date_stamp}.xml"
