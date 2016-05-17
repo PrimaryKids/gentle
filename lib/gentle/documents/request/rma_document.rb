@@ -39,7 +39,8 @@ module Gentle
                            'Quantity'        => returned_item.inventory_unit.line_item.quantity,
                            'SaleUOM'         => 'EA', #Each
                            'ReturnReason'    => @rma.reason.name,
-                           'CustomerComment' => ''
+                           'CustomerComment' => '',
+                           'Warehouse'       => warehouse
                   )
                 end
 
@@ -58,6 +59,29 @@ module Gentle
           Time.now.strftime('%Y%m%d_%H%M%3N')
         end
 
+        def business_unit
+          @config[:business_unit]
+        end
+
+        def type
+          'RMADocument'
+        end
+
+        def document_number
+          @rma.number
+        end
+
+        def warehouse
+          'Default'
+        end
+
+        def date
+          @rma.created_at
+        end
+
+        def filename
+          "#{business_unit}_#{type}_#{document_number}_#{date.strftime(DATEFORMAT)}.xml"
+        end
       end
     end
   end
