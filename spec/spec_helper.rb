@@ -256,6 +256,77 @@ class OrderDouble
   end
 end
 
+class ReasonDouble
+  attr_accessor :name
+  DEFAULT_OPTIONS = {
+      name: 'Fitting'
+  }
+  def initialize(options = {})
+    @name = options[:name]
+  end
+  def self.example(options = {})
+    self.new(DEFAULT_OPTIONS.merge(options))
+  end
+end
+
+class InventoryUnitDouble
+  attr_accessor :variant, :line_item, :line_item_id
+
+  DEFAULT_OPTIONS = {
+      line_item_id: 1,
+      line_item: LineItemDouble.example,
+      variant: VariantDouble.example
+  }
+  def initialize(options = {})
+    @line_item_id = options[:line_item_id]
+    @line_item    = options[:line_item]
+    @variant      = options[:variant]
+  end
+  def self.example(options = {})
+    self.new(DEFAULT_OPTIONS.merge(options))
+  end
+end
+
+class ReturnItemDouble
+  attr_accessor :inventory_unit
+
+  DEFAULT_OPTIONS = {
+      inventory_unit: InventoryUnitDouble.example,
+  }
+  def initialize(options = {})
+    @inventory_unit = options[:inventory_unit]
+  end
+  def self.example(options = {})
+    self.new(DEFAULT_OPTIONS.merge(options))
+  end
+end
+
+class RMADouble
+  attr_accessor :return_items, :order, :config, :reason, :number, :tracking_number, :created_at
+
+  DEFAULT_OPTIONS = {
+      number: 'RMA1234567',
+      tracking_number: 'UPS1234',
+      return_items: [ReturnItemDouble.example],
+      reason: ReasonDouble.example,
+      config: { client_id: 123, business_unit: 'BU123'},
+      created_at: Time.new(2013, 04, 07, 13, 45, 00)
+
+  }
+  def initialize(options = {})
+    @number          = options[:number]
+    @tracking_number = options[:tracking_number]
+    @return_items    = options[:return_items]
+    @reason          = options[:reason]
+    @config          = options[:config]
+    @order           = options[:order]
+    @created_at      = options[:created_at]
+  end
+  def self.example(options = {})
+    self.new(DEFAULT_OPTIONS.merge(options))
+  end
+end
+
 class ShipmentDouble
   DEFAULT_OPTIONS = {
     shipping_method: ShippingMethodDouble.example,
