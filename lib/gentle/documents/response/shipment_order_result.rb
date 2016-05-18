@@ -50,6 +50,10 @@ module Gentle
           @carton ||= @document.css('Carton').first
         end
 
+        def namespace
+          @namespace ||= @document.collect_namespaces['xmlns']
+        end
+
       end
     end
   end
