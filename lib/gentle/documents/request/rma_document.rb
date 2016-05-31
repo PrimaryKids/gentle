@@ -29,6 +29,7 @@ module Gentle
               xml.RMA('ClientID'       => @config[:client_id],
                       'BusinessUnit'   => @config[:business_unit],
                       'RMANumber'      => @rma.number,
+                      'Warehouse'      => warehouse,
                       'TrackingNumber' => @rma.tracking_number) do
 
                 @rma.return_items.each do |returned_item|
@@ -38,8 +39,7 @@ module Gentle
                            'Quantity'        => returned_item.inventory_unit.line_item.quantity,
                            'SaleUOM'         => 'EA', #Each
                            'ReturnReason'    => @rma.reason.name,
-                           'CustomerComment' => '',
-                           'Warehouse'       => warehouse
+                           'CustomerComment' => ''
                   )
                 end
               end
