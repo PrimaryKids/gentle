@@ -24,13 +24,12 @@ module Gentle
 
         def to_xml
           builder = Nokogiri::XML::Builder.new do |xml|
-            xml.RMADocument('xmlns' => 'http://schemas.quietlogistics.com/V2/RMADocument.xsd') {
-
+            xml.RMADocument('xmlns' => 'http://schemas.quietlogistics.com/V2/RMADocument.xsd') do
 
               xml.RMA('ClientID'       => @config[:client_id],
                       'BusinessUnit'   => @config[:business_unit],
                       'RMANumber'      => @rma.number,
-                      'TrackingNumber' => @rma.tracking_number) {
+                      'TrackingNumber' => @rma.tracking_number) do
 
                 @rma.return_items.each do |returned_item|
                   xml.Line('LineNo'          => returned_item.inventory_unit.line_item_id,
@@ -43,10 +42,8 @@ module Gentle
                            'Warehouse'       => warehouse
                   )
                 end
-
-              }
-
-            }
+              end
+            end
           end
           builder.to_xml
         end
