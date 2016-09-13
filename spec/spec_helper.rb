@@ -269,33 +269,18 @@ class ReasonDouble
   end
 end
 
-class InventoryUnitDouble
-  attr_accessor :variant, :line_item, :line_item_id
-
-  DEFAULT_OPTIONS = {
-      line_item_id: 1,
-      line_item: LineItemDouble.example,
-      variant: VariantDouble.example
-  }
-  def initialize(options = {})
-    @line_item_id = options[:line_item_id]
-    @line_item    = options[:line_item]
-    @variant      = options[:variant]
-  end
-  def self.example(options = {})
-    self.new(DEFAULT_OPTIONS.merge(options))
-  end
-end
 
 class ReturnItemDouble
-  attr_accessor :inventory_unit
+  attr_accessor :sku
 
   DEFAULT_OPTIONS = {
-      inventory_unit: InventoryUnitDouble.example,
+      sku: "ABC-123",
   }
+
   def initialize(options = {})
-    @inventory_unit = options[:inventory_unit]
+    @sku = options[:sku]
   end
+
   def self.example(options = {})
     self.new(DEFAULT_OPTIONS.merge(options))
   end
@@ -303,6 +288,7 @@ end
 
 class RMADouble
   attr_accessor :return_items, :order, :config, :reason, :number, :tracking_number, :created_at
+  alias_method :returned_items, :return_items
 
   DEFAULT_OPTIONS = {
       number: 'RMA1234567',
