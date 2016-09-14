@@ -17,7 +17,7 @@
     ServiceLevel="FIRST"
     TrackingId="40000000000"
     Weight="0.66">
-    <Content Line="1"Quantity="1" />
-    <Content Line="2"Quantity="1" />
+    <Content Line="1" Quantity="1" />
+    <Content Line="2" Quantity="1" />
   </Carton>
 </SOResult>

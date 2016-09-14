@@ -37,17 +37,28 @@ module Gentle
 
           line_items = document.css('Line')
           assert_equal 1, line_items.length
-          assert_line_item(@order.line_items.first, line_items.first)
+          assert_line_item("1", @order.line_items.first, line_items.first)
         end
 
+        it "should create 1 line for each returned item" do
+          @rma.return_items = [ReturnItemDouble.example, ReturnItemDouble.example]
+          @object = @RMADocument = RMADocument.new(config: @config, rma: @rma)
+
+          document = Nokogiri::XML::Document.parse(@RMADocument.to_xml)
+          line_items = document.css('Line')
+          assert_equal 2, line_items.length
+          assert_line_item("1", @order.line_items.first, line_items.first)
+          assert_line_item("2", @order.line_items.first, line_items.last)
+
+        end
 
         private
 
-        def assert_line_item(expected_line_item, line_item)
-          assert_equal "1", line_item['LineNo']
+        def assert_line_item(line_number, expected_line_item, line_item)
+          assert_equal line_number, line_item['LineNo']
           assert_equal  @order.number, line_item['OrderNumber']
           assert_equal expected_line_item.sku.to_s, line_item['ItemNumber']
-          assert_equal expected_line_item.quantity.to_s, line_item['Quantity']
+          assert_equal "1", line_item['Quantity']
           assert_equal "EA", line_item['SaleUOM']
           assert_equal @rma.reason.name, line_item['ReturnReason']
           assert_equal "", line_item['CustomerComment']

@@ -31,11 +31,11 @@ module Gentle
                       'Warehouse'      => warehouse,
                       'TrackingNumber' => @rma.tracking_number) do
 
-                @rma.returned_items.each do |returned_item|
-                  xml.Line('LineNo'          => returned_item.line_item_id,
+                @rma.returned_items.each_with_index do |returned_item, line_number|
+                  xml.Line('LineNo'          => line_number + 1,
                            'OrderNumber'     => @order.number,
                            'ItemNumber'      => returned_item.sku,
-                           'Quantity'        => returned_item.quantity,
+                           'Quantity'        => 1,
                            'SaleUOM'         => 'EA', #Each
                            'ReturnReason'    => @rma.reason.name,
                            'CustomerComment' => ''
