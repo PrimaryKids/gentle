@@ -10,10 +10,20 @@ module Gentle
       @xml.serialize(encoding: "UTF-8")
     end
 
-    def shipment_number
-      result_description = @xml.css("ErrorMessage").first["ResultDescription"]
-      match_data = result_description.match(/(.+)_(.+)_(.+)_.*.xml/) unless result_description.nil?
-      match_data[2] unless match_data.nil?
+    def identifier
+      filename[2]
+    end
+    alias_method :shipment_number, :identifier
+
+    def object_type
+      filename[1] unless filename.nil?
+    end
+
+    def result_description
+      @result_description ||= @xml.css("ErrorMessage").first["ResultDescription"]
+    end
+    def filename
+      @filename ||= result_description.split('_') unless result_description.nil?
     end
   end
 end
