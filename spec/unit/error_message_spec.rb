@@ -14,8 +14,12 @@ module Gentle
       assert_equal normalize(@xml_content), normalize(@message.to_xml)
     end
 
-    it "extracts the shipment number from the error message" do
-      assert_equal "H123456789", @message.shipment_number
+    it "extracts the identifier from the error message" do
+      assert_equal "H123456789", @message.identifier
+    end
+
+    it "extracts the object type from the error message" do
+      assert_equal "ShipmentOrder", @message.object_type
     end
 
     it "returns nil for shipment number if it cannot find it" do
