@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InventorySummary
+  xmlns="http://schemas.quietlogistics.com/V2/InventorySummary.xsd"
+  ClientId="Gentle"
+  BusinessUnit="Gentle"
+  Warehouse="DVN">
+  <Inventory ItemNumber="12345">
+    <ItemStatus Status="Avail" Quantity="5" />
+    <ItemStatus Status="RECEIVED" Quantity="1" />
+    <ItemStatus Status="Alloc" Quantity="1" />
+  </Inventory>
+  <Inventory ItemNumber="12346">
+    <ItemStatus Status="Avail" Quantity="2" />
+  </Inventory>
+</InventorySummary>
