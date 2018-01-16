@@ -9,6 +9,10 @@ module Gentle
           @document = Nokogiri::XML::Document.parse(@io)
         end
 
+        def namespace
+          @namespace ||= @document.collect_namespaces['xmlns']
+        end
+
         def warehouse
           @document.root.attributes['Warehouse'].value
         end

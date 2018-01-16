@@ -14,6 +14,13 @@ module Gentle
           assert_equal 'DVN', order_result.warehouse
         end
 
+        it "has correct XML namespace" do
+          document = load_response('inventory_summary')
+          order_result = InventorySummaryReady.new(io: document)
+
+          assert_equal 'http://schemas.quietlogistics.com/V2/InventorySummary.xsd', order_result.namespace
+        end
+
         describe '#inventories' do
           it "returns available inventory levels" do
             document = load_response('inventory_summary')
