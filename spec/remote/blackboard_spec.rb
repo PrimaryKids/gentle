@@ -8,7 +8,7 @@ module Gentle
     include Fixtures
 
     before do
-      AWS.config(stub_requests: false)
+      Aws.config(stub_requests: false)
       @client = Client.new(load_configuration)
       @blackboard = Blackboard.new(@client)
       @document = DocumentDouble.new(

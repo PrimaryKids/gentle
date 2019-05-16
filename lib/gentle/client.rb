@@ -1,5 +1,5 @@
-require 'aws/s3'
-require 'aws/sqs'
+require 'aws-sdk-s3'
+require 'aws-sdk-sqs'
 require 'active_support/core_ext/hash/slice'
 require 'active_support/core_ext/hash/indifferent_access'
 
@@ -45,21 +45,21 @@ module Gentle
 
     private
     def sqs_client
-      @sqs_client ||= AWS::SQS.new(@credentials)
+      @sqs_client ||= Aws::SQS::Client.new(@credentials)
     end
 
     def s3_client
-      @s3_client ||= AWS::S3.new(@credentials)
+      @s3_client ||= Aws::S3::Client.new(@credentials)
     end
 
     def fetch_bucket(name)
-      bucket = s3_client.buckets[name]
+      bucket = Aws::S3::Bucket.new(name, s3_client)
       raise(InvalidBucketError.new("#{name} is not a valid bucket")) unless bucket.exists?
       bucket
     end
 
     def fetch_queue(url)
-      queue = sqs_client.queues[url]
+      queue = Aws::SQS::Queue.new(url, sqs_client)
       raise(InvalidQueueError.new("#{url} is not a valid queue")) unless queue.exists?
       queue
     end

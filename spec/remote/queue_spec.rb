@@ -8,10 +8,10 @@ module Gentle
     include Configuration
 
     before do
-      AWS.config(:stub_requests => false)
-      @client = Client.new(load_configuration)
+      Aws.config[:stub_responses] = true
+      @client = Gentle::Client.new(load_configuration)
       @sqs_queues = [@client.to_quiet_queue, @client.from_quiet_queue]
-      @default_wait_time = @sqs_queues.map(&:wait_time_seconds).max
+      @default_wait_time = @sqs_queues.map(&:attributes).tap { |attr| puts attr }.map(&:wait_time_seconds).max
       @sqs_queues.each { |queue| queue.wait_time_seconds = 1 }
 
       @document = DocumentDouble.new(
@@ -23,7 +23,7 @@ module Gentle
       )
 
       @message = Message.new(:client => @client, :document => @document)
-      @queue = Queue.new(@client)
+      @queue = Gentle::Queue.new(@client)
     end
 
     after do
