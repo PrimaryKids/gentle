@@ -7,13 +7,13 @@ module Gentle
 
     def send(message)
       queue = client.to_quiet_queue
-      queue.send_message(message.to_xml)
+      queue.send_message(message_body: message.to_xml)
     end
 
     def receive
       queue = client.from_quiet_queue
       message = nil
-      queue.receive_message do |msg|
+      queue.receive_messages(max_number_of_messages: 1) do |msg|
         message = build_message(msg)
       end
       message || Message.new

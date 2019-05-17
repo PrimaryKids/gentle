@@ -10,7 +10,7 @@ module Gentle
 
     def post(document)
       bucket = client.to_quiet_bucket
-      if bucket.objects[document.filename].write(document.to_xml)
+      if bucket.objects(document.filename).put(body: document.to_xml)
         Message.new(:client => @client, :document => document)
       end
     end

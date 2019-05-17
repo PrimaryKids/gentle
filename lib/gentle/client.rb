@@ -54,13 +54,13 @@ module Gentle
 
     def fetch_bucket(name)
       bucket = Aws::S3::Bucket.new(name, s3_client)
-      raise(InvalidBucketError.new("#{name} is not a valid bucket")) unless bucket.exists?
+      raise(InvalidBucketError.new("#{name} is not a valid bucket")) unless bucket_exists?(name)
       bucket
     end
 
     def fetch_queue(url)
       queue = Aws::SQS::Queue.new(url, sqs_client)
-      raise(InvalidQueueError.new("#{url} is not a valid queue")) unless queue.exists?
+      raise(InvalidQueueError.new("#{url} is not a valid queue")) unless queue_exists?(url)
       queue
     end
 
@@ -83,6 +83,25 @@ module Gentle
 
     def all_queues?
       has_keys?(@queues, [:from, :to, :inventory])
+    end
+
+    def bucket_exists?(bucket_name)
+      begin
+        s3_client.get_bucket_versioning(bucket: bucket_name)
+        true
+      rescue Errors::NoSuchBucket
+        false
+      rescue Errors::AccessDenied
+        true
+      end
+    end
+
+    def queue_exists?(queue_url)
+      sqs_client.get_queue_attributes(queue_url: queue_url, attribute_names: ["QueueArn"])
+    rescue
+      false
+    else
+      true
     end
 
     def has_keys?(hash, keys)

@@ -8,7 +8,7 @@ module Gentle
     include Fixtures
 
     before do
-      Aws.config(stub_requests: false)
+      Aws.config[:stub_responses] = false
       @client = Client.new(load_configuration)
       @blackboard = Blackboard.new(@client)
       @document = DocumentDouble.new(
@@ -29,7 +29,7 @@ module Gentle
       message = @blackboard.post(@document)
       file = message.document_name
       bucket = @client.to_quiet_bucket
-      assert bucket.objects[file].exists?, "It appears that #{file} was not written to S3"
+      assert bucket.objects(file).exists?, "It appears that #{file} was not written to S3"
     end
 
     it "should be able to fetch a document from an S3 bucket when given a message" do
