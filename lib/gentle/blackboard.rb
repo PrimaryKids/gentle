@@ -10,14 +10,14 @@ module Gentle
 
     def post(document)
       bucket = client.to_quiet_bucket
-      if bucket.objects(document.filename).put(body: document.to_xml)
+      if bucket.object(document.filename).put(body: document.to_xml)
         Message.new(:client => @client, :document => document)
       end
     end
 
     def fetch(message)
       bucket = client.from_quiet_bucket
-      contents = bucket.objects[message.document_name].read
+      contents = bucket.get_object(message.document_name).body.read
       build_document(message.document_type, contents)
     end
 

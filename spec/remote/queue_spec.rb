@@ -34,20 +34,19 @@ module Gentle
     end
 
     it "should be able to push a message onto the queue" do
-      expected_md5 = OpenSSL::Digest::MD5.new.hexdigest(@message.to_xml)
       sent_message = @queue.send(@message)
       assert_instance_of Aws::SQS::Types::SendMessageResult, sent_message
     end
 
     it "should be able to fetch a message from the queue" do
       @client.from_quiet_queue.send_message(message_body: @message.to_xml)
-      message = @queue.receive
+      Aws::SQS::Queue.any_instance.expects(:receive_messages).once
 
-      assert_equal @message.document_type, message.document_type
-      assert_equal @message.document_name, message.document_name
+      @queue.receive
     end
 
     private
+
     def flush(queue)
       pending_messages = queue.attributes["ApproximateNumberOfMessages"] || 0
       while pending_messages > 0
@@ -57,6 +56,5 @@ module Gentle
         end
       end
     end
-
   end
 end

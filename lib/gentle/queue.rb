@@ -1,6 +1,7 @@
 module Gentle
   class Queue
     attr_reader :client
+
     def initialize(client)
       @client = client
     end
@@ -23,7 +24,7 @@ module Gentle
       client.from_quiet_queue.approximate_number_of_messages
     end
 
-  private
+    private
 
     def build_message(msg)
       if received_error? msg

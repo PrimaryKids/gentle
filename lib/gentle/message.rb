@@ -9,7 +9,7 @@ module Gentle
     attr_reader :client, :document, :xml
 
     def initialize(options = {})
-      @xml = Nokogiri::XML::Document.parse(options[:xml]) if options[:xml]
+      @xml = options[:xml] ? Nokogiri::XML::Document.parse(options[:xml]) : nil
       @client = options[:client]
       @document = options[:document]
     end
@@ -22,11 +22,19 @@ module Gentle
     end
 
     def document_type
-      @document ? @document.type : @xml.css('EventMessage').first['DocumentType']
+      if @document
+        @document.type
+      elsif @xml
+        @xml.css('EventMessage').first['DocumentType']
+      end
     end
 
     def document_name
-      @document ? @document.filename : @xml.css('EventMessage').first['DocumentName']
+      if @document
+        @document.type
+      elsif @xml
+        @xml.css('EventMessage').first['DocumentName']
+      end
     end
 
     def attributes
