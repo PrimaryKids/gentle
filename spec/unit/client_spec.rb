@@ -81,14 +81,14 @@ module Gentle
     end
 
     it "should raise an error if the bucket names are invalid" do
-      Aws::S3::Bucket.any_instance.expects(:exists?).returns(false)
+      Aws::S3::Client.any_instance.expects(:get_bucket_versioning).at_least_once.raises(StandardError)
       assert_raises Gentle::Client::InvalidBucketError do
         @client.to_quiet_bucket
       end
     end
 
     it "should raise an error if the queue names are invalid" do
-      Aws::SQS::Queue.any_instance.expects(:exists?).returns(false)
+      Aws::SQS::Client.any_instance.expects(:get_queue_attributes).at_least_once.raises(StandardError)
       assert_raises Gentle::Client::InvalidQueueError do
         @client.to_quiet_queue
       end
