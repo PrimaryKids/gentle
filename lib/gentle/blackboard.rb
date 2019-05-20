@@ -17,7 +17,7 @@ module Gentle
 
     def fetch(message)
       bucket = client.from_quiet_bucket
-      contents = bucket.get_object(message.document_name).body.read
+      contents = bucket.object(message.document_name).get.body.read
       build_document(message.document_type, contents)
     end
 

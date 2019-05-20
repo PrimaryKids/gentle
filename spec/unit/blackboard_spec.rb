@@ -26,13 +26,13 @@ end
 module Gentle
   describe "Blackboard" do
     before do
+      Aws.config[:stub_responses] = true
       @bucket = mock()
+      @bucket.stubs(:name).returns("Test Bucket")
 
       @client = mock()
       @client.stubs(:to_quiet_bucket).returns(@bucket)
       @client.stubs(:from_quiet_bucket).returns(@bucket)
-
-      @io = StringIO.new
 
       @document = mock()
       @document.stubs(:to_xml).returns("actually doesn't matter")
@@ -46,9 +46,10 @@ module Gentle
     end
 
     it "should be possible to post a document to the blackboard" do
-      @bucket.expects(:objects).returns({@document.filename => @io})
+      s3_object = mock()
+      @bucket.expects(:object).returns(s3_object).once
+      s3_object.expects(:put).once.with(body: @document.to_xml)
       @blackboard.post(@document)
-      assert_io(@document.to_xml, @io)
     end
 
     it "should be possible to build a document for a response type" do
@@ -68,9 +69,11 @@ module Gentle
     end
 
     it "should be possible to fetch a document from the blackboard" do
-      @io.write('fancy noodles')
-      @io.rewind
-      @bucket.expects(:objects).returns({@message.document_name => @io})
+      s3_object = mock()
+      s3_object_output = Aws::S3::Types::GetObjectOutput.new(body: StringIO.new("fancy noodles"))
+      s3_object.stubs(:get).returns(s3_object_output)
+      @bucket.expects(:object).returns(s3_object)
+
       Response.expects(:valid_type?).returns(true)
       @message.stubs(:document_type).returns('ThingerResponse')
       assert_equal 'fancy noodles', @blackboard.fetch(@message).contents[:io]

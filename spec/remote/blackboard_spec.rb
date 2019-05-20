@@ -22,7 +22,7 @@ module Gentle
 
     after do
       buckets = [@client.to_quiet_bucket, @client.from_quiet_bucket]
-      buckets.each { |bucket| bucket.objects.map &:delete }
+      buckets.each { |bucket| bucket.objects.map(&:delete) }
     end
 
     it "should be able to write a document to an S3 bucket" do
@@ -35,7 +35,10 @@ module Gentle
       @client.from_quiet_bucket.object(@document.filename).put(body: expected_contents)
       message = MessageDouble.new(document_name: @document.filename, document_type: @document.type)
 
-      Aws::S3::Bucket.any_instance.expects(:get_object).once.with(message.document_name).returns(Aws::S3::Types::GetObjectOutput.new(body: StringIO.new))
+      s3_object = mock()
+      s3_object_output = Aws::S3::Types::GetObjectOutput.new(body: StringIO.new(expected_contents))
+      s3_object.stubs(:get).returns(s3_object_output)
+      Aws::S3::Bucket.any_instance.expects(:object).once.with(message.document_name).returns(s3_object)
 
       @blackboard.fetch(message)
     end
