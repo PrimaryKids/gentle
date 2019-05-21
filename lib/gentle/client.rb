@@ -45,11 +45,11 @@ module Gentle
 
     private
     def sqs_client
-      @sqs_client ||= Aws::SQS::Client.new(@credentials)
+      @sqs_client ||= Aws::SQS::Client.new(credentials: Aws::Credentials.new(*@credentials.values))
     end
 
     def s3_client
-      @s3_client ||= Aws::S3::Client.new(@credentials)
+      @s3_client ||= Aws::S3::Client.new(credentials: Aws::Credentials.new(*@credentials.values))
     end
 
     def fetch_bucket(name)
