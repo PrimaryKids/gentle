@@ -55,13 +55,13 @@ module Gentle
     def fetch_bucket(name)
       raise(InvalidBucketError.new("#{name} is not a valid bucket")) unless bucket_exists?(name)
 
-      Aws::S3::Bucket.new(name, s3_client)
+      Aws::S3::Bucket.new(name, client: s3_client)
     end
 
     def fetch_queue(url)
       raise(InvalidQueueError.new("#{url} is not a valid queue")) unless queue_exists?(url)
 
-      Aws::SQS::Queue.new(url, sqs_client)
+      Aws::SQS::Queue.new(url, client: sqs_client)
     end
 
     def verify!
