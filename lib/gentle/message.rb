@@ -31,7 +31,7 @@ module Gentle
 
     def document_name
       if @document
-        @document.type
+        @document.filename
       elsif @xml
         @xml.css('EventMessage').first['DocumentName']
       end
