@@ -92,7 +92,7 @@ module Gentle
         end
 
         def contain_parts?(item)
-          item.part_line_items && !item.part_line_items.empty?
+          item.try(:part_line_items) && !item.part_line_items.empty?
         end
 
         def add_item_parts(part_line_items)
