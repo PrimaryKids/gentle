@@ -13,11 +13,8 @@ module Gentle
 
     def receive
       queue = client.from_quiet_queue
-      message = nil
-      queue.receive_messages(max_number_of_messages: 1) do |msg|
-        message = build_message(msg)
-      end
-      message || Message.new
+      msg = queue.receive_messages(max_number_of_messages: 1).first
+      build_message(msg) || Message.new
     end
 
     def approximate_pending_messages
