@@ -53,7 +53,6 @@ module Gentle
         def namespace
           @namespace ||= @document.collect_namespaces['xmlns']
         end
-
       end
     end
   end
