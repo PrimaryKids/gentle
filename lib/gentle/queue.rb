@@ -17,6 +17,12 @@ module Gentle
       build_message(msg) || Message.new
     end
 
+    def receive_inventory
+      queue = client.quiet_inventory_bucket
+      msg = queue.receive_messages(max_number_of_messages: 1).first
+      build_message(msg) || Message.new
+    end
+
     def approximate_pending_messages
       client.from_quiet_queue.approximate_number_of_messages
     end
