@@ -92,7 +92,7 @@ module Gentle
         end
 
         def contain_parts?(item)
-          item.try(:part_line_items) && !item.part_line_items.empty?
+          item.respond_to?(:part_line_items) && !item.part_line_items.empty?
         end
 
         def add_item_parts(part_line_items)
@@ -160,7 +160,6 @@ module Gentle
         def message_id
           SecureRandom.uuid
         end
-
       end
     end
   end

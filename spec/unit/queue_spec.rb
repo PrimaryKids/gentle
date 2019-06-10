@@ -27,7 +27,7 @@ module Gentle
 
     it "should return a message when receiving from a queue" do
       @message.stubs(:body).returns(load_message('purchase_order_message'))
-      @sqs_queue.expects(:receive_messages).yields(@message)
+      @sqs_queue.expects(:receive_messages).returns([@message])
 
       received_message = @queue.receive
       assert_equal 'PurchaseOrder', received_message.document_type
@@ -35,7 +35,7 @@ module Gentle
     end
 
     it "should return a message when receiving even if the queue did not return anything" do
-      @sqs_queue.expects(:receive_messages)
+      @sqs_queue.expects(:receive_messages).returns([])
 
       received_message = @queue.receive
       assert_equal false, received_message.nil?
@@ -43,7 +43,7 @@ module Gentle
 
     it "should return an error message when receiving an error from a queue" do
       @message.stubs(:body).returns(load_message('error_message'))
-      @sqs_queue.expects(:receive_messages).yields(@message)
+      @sqs_queue.expects(:receive_messages).returns([@message])
 
       received_message = @queue.receive
       assert_instance_of Gentle::ErrorMessage, received_message

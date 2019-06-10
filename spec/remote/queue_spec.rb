@@ -39,8 +39,10 @@ module Gentle
     end
 
     it "should be able to fetch a message from the queue" do
-      @client.from_quiet_queue.send_message(message_body: @message.to_xml)
-      Aws::SQS::Queue.any_instance.expects(:receive_messages).once
+      test_message = Object.new
+      test_message.stubs(:body).returns("")
+
+      @client.from_quiet_queue.expects(:receive_messages).once.returns([test_message])
 
       @queue.receive
     end

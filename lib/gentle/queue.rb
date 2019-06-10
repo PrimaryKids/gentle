@@ -12,15 +12,11 @@ module Gentle
     end
 
     def receive
-      queue = client.from_quiet_queue
-      msg = queue.receive_messages(max_number_of_messages: 1).first
-      build_message(msg) || Message.new
+      receive_from(client.from_quiet_queue)
     end
 
     def receive_inventory
-      queue = client.quiet_inventory_queue
-      msg = queue.receive_messages(max_number_of_messages: 1).first
-      build_message(msg) || Message.new
+      receive_from(client.quiet_inventory_queue)
     end
 
     def approximate_pending_messages
@@ -28,6 +24,16 @@ module Gentle
     end
 
     private
+
+    def receive_from(queue)
+      msg = queue.receive_messages(max_number_of_messages: 1).first
+
+      if msg.nil?
+        false
+      else
+        build_message(msg) || Message.new
+      end
+    end
 
     def build_message(msg)
       if received_error? msg
