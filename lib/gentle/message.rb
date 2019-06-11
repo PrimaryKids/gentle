@@ -6,12 +6,17 @@ module Gentle
     class MissingDocumentError < StandardError; end
     class MissingClientError < StandardError; end
 
-    attr_reader :client, :document, :xml
+    attr_reader :client, :document, :xml, :queue_message
 
     def initialize(options = {})
       @xml = options[:xml] ? Nokogiri::XML::Document.parse(options[:xml]) : nil
       @client = options[:client]
       @document = options[:document]
+      @queue_message = options[:queue_message]
+    end
+
+    def delete
+      @queue_message.delete if @queue_message
     end
 
     def to_xml

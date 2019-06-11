@@ -1,9 +1,10 @@
 module Gentle
   class ErrorMessage
-    attr_reader :xml
+    attr_reader :xml, :queue_message
 
     def initialize(options = {})
       @xml = Nokogiri::XML::Document.parse(options[:xml]) if options[:xml]
+      @queue_message = options[:queue_message]
     end
 
     def to_xml

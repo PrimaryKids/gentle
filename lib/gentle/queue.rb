@@ -37,9 +37,9 @@ module Gentle
 
     def build_message(msg)
       if received_error? msg
-        ErrorMessage.new(xml: msg.body)
+        ErrorMessage.new(xml: msg.body, queue_message: msg)
       else
-        Message.new(xml: msg.body)
+        Message.new(xml: msg.body, queue_message: msg)
       end
     end
 
