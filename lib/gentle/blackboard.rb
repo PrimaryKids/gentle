@@ -23,7 +23,7 @@ module Gentle
 
     def remove(message)
       bucket = client.from_quiet_bucket
-      object = bucket.objects[message.document_name]
+      object = bucket.object(message.document_name)
       if object.exists?
         object.delete
         true
