@@ -26,7 +26,9 @@ module Gentle
     private
 
     def receive_from(queue)
-      msg = queue.receive_messages(max_number_of_messages: 1).first
+      msg = queue.receive_messages(max_number_of_messages: 1,
+                                   attribute_names: ["All"],
+                                   message_attribute_names: ["All"]).first
 
       if msg.nil?
         false

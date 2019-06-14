@@ -20,6 +20,8 @@ module Gentle
     end
 
     def to_xml
+      return @xml.to_xml if @xml
+
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.EventMessage(attributes)
       end
