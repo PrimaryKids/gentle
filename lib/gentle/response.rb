@@ -4,7 +4,7 @@ require 'gentle/documents/response/inventory_event'
 
 module Gentle
   module Response
-    VALID_RESPONSE_TYPES = %w(ShipmentOrderResult InventorySummaryReady InventoryEvent)
+    VALID_RESPONSE_TYPES = %w(ShipmentOrderResult InventorySummaryReady InventoryEvent PurchaseOrderReceipt)
 
     def self.valid_type?(type)
       VALID_RESPONSE_TYPES.include?(type)
