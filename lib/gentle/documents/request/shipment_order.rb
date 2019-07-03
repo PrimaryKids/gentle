@@ -24,6 +24,7 @@ module Gentle
         def initialize(options = {})
           @client   = options.fetch(:client)
           @shipment = options.fetch(:shipment)
+          @comments = options.fetch(:comments) || @shipment.order.special_instructions
           @shipment_number = @shipment.number
         end
 
@@ -40,7 +41,7 @@ module Gentle
 
                 xml.Extension @shipment.order.number
 
-                xml.Comments @shipment.order.special_instructions
+                xml.Comments @comments
 
                 xml.ShipMode('Carrier'      => @shipment.shipping_method.carrier,
                              'ServiceLevel' => @shipment.shipping_method.service_level)
