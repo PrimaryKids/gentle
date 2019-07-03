@@ -123,7 +123,7 @@ module Gentle
         end
 
         def ship_address
-          @shipment.address
+          @shipment.address || @shipment.order.ship_address
         end
 
         def bill_address
