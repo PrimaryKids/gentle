@@ -25,6 +25,7 @@ module Gentle
           @client   = options.fetch(:client)
           @shipment = options.fetch(:shipment)
           @comments = options.fetch(:comments) || @shipment.order.special_instructions
+          @notes = options.fetch(:notes)
           @shipment_number = @shipment.number
         end
 
@@ -48,6 +49,11 @@ module Gentle
 
                 xml.ShipTo(ship_to_hash)
                 xml.BillTo(bill_to_hash)
+
+                @notes.each do |note|
+                  xml.Notes('NoteType': note[:note_type],
+                            'NoteValue': note[:note_value])
+                end
 
                 if @shipment.respond_to?(:value_added_services)
                   @shipment.value_added_services.each do |service|
