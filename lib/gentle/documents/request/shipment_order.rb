@@ -121,7 +121,7 @@ module Gentle
         end
 
         def order_items
-          @shipment.order.line_items
+          @shipment.line_items
         end
 
         def order_type
@@ -137,7 +137,7 @@ module Gentle
         end
 
         def full_name
-          @shipment.address.full_name
+          ship_address.ship_address.full_name
         end
 
         def message
