@@ -1,4 +1,5 @@
 require 'gentle/documents/response/shipment_order_result'
+require 'gentle/documents/response/shipment_order_cancel_result'
 require 'gentle/documents/response/inventory_summary_ready'
 require 'gentle/documents/response/inventory_event'
 
