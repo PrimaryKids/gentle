@@ -7,6 +7,10 @@ module Gentle
       @queue_message = options[:queue_message]
     end
 
+    def delete
+      @queue_message.delete if @queue_message
+    end
+
     def to_xml
       @xml.serialize(encoding: "UTF-8")
     end
