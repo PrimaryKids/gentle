@@ -53,6 +53,24 @@ module Gentle
         def namespace
           @namespace ||= @document.collect_namespaces['xmlns']
         end
+
+        def lines
+          so_result.children
+            .select { |c| c.name == "Line" }
+            .map { |l| Line.new(l) }
+        end
+
+        private
+
+        class Line < SimpleDelegator
+          def item_number
+            attributes["ItemNumber"].value
+          end
+
+          def quantity
+            attributes["Quantity"].value
+          end
+        end
       end
     end
   end
