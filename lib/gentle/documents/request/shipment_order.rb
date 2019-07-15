@@ -137,7 +137,7 @@ module Gentle
         end
 
         def full_name
-          ship_address.ship_address.full_name
+          ship_address.full_name
         end
 
         def message
