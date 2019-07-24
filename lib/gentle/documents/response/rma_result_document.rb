@@ -1,7 +1,7 @@
 module Gentle
   module Documents
     module Response
-      class RmaResult
+      class RmaResultDocument
         attr_reader :io
 
         def initialize(options = {})
