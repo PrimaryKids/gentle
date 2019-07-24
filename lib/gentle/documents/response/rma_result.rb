@@ -38,7 +38,7 @@ module Gentle
         def lines_by_order_number
           lines.each_with_object({}) do |line, memo|
             memo[line.order_number] ||= []
-            memo[line.order_number] = line
+            memo[line.order_number] << line
           end
         end
 
@@ -59,6 +59,10 @@ module Gentle
 
           def order_number
             attributes["OrderNumber"].value
+          end
+
+          def notes
+            attributes["Notes"].value
           end
         end
       end
