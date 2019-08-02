@@ -26,6 +26,7 @@ module Gentle
           @shipment = options.fetch(:shipment)
           @comments = options.fetch(:comments) || @shipment.order.special_instructions
           @notes = options.fetch(:notes)
+          @item_filter = options.fetch(:item_filter) || Proc.new { |line_item| true }
           @shipment_number = @shipment.number
         end
 
@@ -121,7 +122,7 @@ module Gentle
         end
 
         def order_items
-          @shipment.line_items
+          @shipment.line_items.select(&@item_filter)
         end
 
         def order_type
