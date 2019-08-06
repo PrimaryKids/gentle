@@ -158,7 +158,7 @@ module Gentle
         end
 
         def date
-          @shipment.created_at
+          @shipment.order.completed_at
         end
 
         def filename
