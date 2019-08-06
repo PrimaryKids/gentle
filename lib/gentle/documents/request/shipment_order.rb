@@ -24,9 +24,9 @@ module Gentle
         def initialize(options = {})
           @client   = options.fetch(:client)
           @shipment = options.fetch(:shipment)
-          @comments = options.fetch(:comments) || @shipment.order.special_instructions
+          @comments = options.fetch(:comments, nil) || @shipment.order.special_instructions
           @notes = options.fetch(:notes)
-          @item_filter = options.fetch(:item_filter) || Proc.new { |line_item| true }
+          @item_filter = options.fetch(:item_filter, nil) || Proc.new { |line_item| true }
           @shipment_number = @shipment.number
         end
 
