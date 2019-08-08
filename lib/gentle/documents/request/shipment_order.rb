@@ -26,6 +26,7 @@ module Gentle
           @shipment = options.fetch(:shipment)
           @comments = options.fetch(:comments, nil) || @shipment.order.special_instructions
           @notes = options.fetch(:notes)
+          @gift = options.fetch(:gift, false)
           @item_filter = options.fetch(:item_filter, nil) || Proc.new { |line_item| true }
           @shipment_number = @shipment.number
         end
@@ -39,7 +40,8 @@ module Gentle
 
               xml.OrderHeader('OrderNumber' => @shipment_number,
                               'OrderType'   => order_type,
-                              'OrderDate'   => date.utc.iso8601) {
+                              'OrderDate'   => date.utc.iso8601,
+                              'Gift'        => @gift) {
 
                 xml.Extension @shipment.order.number
 
