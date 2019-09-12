@@ -42,6 +42,10 @@ module Gentle
           end
         end
 
+        def lines_by_rma_number
+          { rma_number: lines }
+        end
+
         private
 
         class Line < SimpleDelegator
@@ -58,7 +62,8 @@ module Gentle
           end
 
           def order_number
-            attributes["OrderNumber"].value
+            attribute = attributes["OrderNumber"]
+            attribute ? attribute.value : nil
           end
 
           def notes
