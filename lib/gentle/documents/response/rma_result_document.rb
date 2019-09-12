@@ -37,6 +37,8 @@ module Gentle
 
         def lines_by_order_number
           lines.each_with_object({}) do |line, memo|
+            next unless line.order_number
+
             memo[line.order_number] ||= []
             memo[line.order_number] << line
           end
