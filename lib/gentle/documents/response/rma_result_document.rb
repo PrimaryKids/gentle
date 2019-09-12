@@ -45,7 +45,7 @@ module Gentle
         end
 
         def lines_by_rma_number
-          { rma_number: lines }
+          { "#{rma_number}" => lines }
         end
 
         private
