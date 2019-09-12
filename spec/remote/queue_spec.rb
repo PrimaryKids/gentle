@@ -8,11 +8,11 @@ module Gentle
     include Configuration
 
     before do
-      AWS.config(:stub_requests => false)
-      @client = Client.new(load_configuration)
+      Aws.config[:stub_responses] = true
+      @client = Gentle::Client.new(load_configuration)
       @sqs_queues = [@client.to_quiet_queue, @client.from_quiet_queue]
-      @default_wait_time = @sqs_queues.map(&:wait_time_seconds).max
-      @sqs_queues.each { |queue| queue.wait_time_seconds = 1 }
+      @default_wait_time = @sqs_queues.map(&:attributes).map { |attrs| attrs["ReceiveMessageWaitTimeSeconds"] }.max
+      @sqs_queues.each { |queue| queue.set_attributes(attributes: { "ReceiveMessageWaitTimeSeconds": 1.to_s }) }
 
       @document = DocumentDouble.new(
         :message_id => '1234567',
@@ -23,35 +23,34 @@ module Gentle
       )
 
       @message = Message.new(:client => @client, :document => @document)
-      @queue = Queue.new(@client)
+      @queue = Gentle::Queue.new(@client)
     end
 
     after do
       @sqs_queues.each do |queue|
         flush(queue)
       end
-      @sqs_queues.each { |queue| queue.wait_time_seconds = @default_wait_time }
+      @sqs_queues.each { |queue| queue.set_attributes(attributes: { "ReceiveMessageWaitTimeSeconds": @default_wait_time.to_s }) }
     end
 
     it "should be able to push a message onto the queue" do
-      expected_md5 = OpenSSL::Digest::MD5.new.hexdigest(@message.to_xml)
       sent_message = @queue.send(@message)
-      # NOTE: This is failing, but the message is getting sent
-      # assert_equal 1, @client.to_quiet_queue.approximate_number_of_messages
-      assert_equal expected_md5, sent_message.md5
+      assert_instance_of Aws::SQS::Types::SendMessageResult, sent_message
     end
 
     it "should be able to fetch a message from the queue" do
-      @client.from_quiet_queue.send_message(@message.to_xml)
-      message = @queue.receive
+      test_message = Object.new
+      test_message.stubs(:body).returns("")
 
-      assert_equal @message.document_type, message.document_type
-      assert_equal @message.document_name, message.document_name
+      @client.from_quiet_queue.expects(:receive_messages).once.returns([test_message])
+
+      @queue.receive
     end
 
     private
+
     def flush(queue)
-      pending_messages = queue.approximate_number_of_messages
+      pending_messages = queue.attributes["ApproximateNumberOfMessages"] || 0
       while pending_messages > 0
         queue.receive_message do |message|
           message.delete
@@ -59,6 +58,5 @@ module Gentle
         end
       end
     end
-
   end
 end

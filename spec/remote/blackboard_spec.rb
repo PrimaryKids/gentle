@@ -8,7 +8,7 @@ module Gentle
     include Fixtures
 
     before do
-      AWS.config(stub_requests: false)
+      Aws.config[:stub_responses] = true
       @client = Client.new(load_configuration)
       @blackboard = Blackboard.new(@client)
       @document = DocumentDouble.new(
@@ -22,22 +22,25 @@ module Gentle
 
     after do
       buckets = [@client.to_quiet_bucket, @client.from_quiet_bucket]
-      buckets.each { |bucket| bucket.objects.delete_all }
+      buckets.each { |bucket| bucket.objects.map(&:delete) }
     end
 
     it "should be able to write a document to an S3 bucket" do
-      message = @blackboard.post(@document)
-      file = message.document_name
-      bucket = @client.to_quiet_bucket
-      assert bucket.objects[file].exists?, "It appears that #{file} was not written to S3"
+      Aws::S3::Object.any_instance.expects(:put).once.with(body: @document.to_xml)
+      @blackboard.post(@document)
     end
 
     it "should be able to fetch a document from an S3 bucket when given a message" do
       expected_contents = load_response('shipment_order_result')
-      @client.from_quiet_bucket.objects[@document.filename].write(expected_contents)
+      @client.from_quiet_bucket.object(@document.filename).put(body: expected_contents)
       message = MessageDouble.new(document_name: @document.filename, document_type: @document.type)
-      document = @blackboard.fetch(message)
-      assert_equal expected_contents, document.io
+
+      s3_object = mock()
+      s3_object_output = Aws::S3::Types::GetObjectOutput.new(body: StringIO.new(expected_contents))
+      s3_object.stubs(:get).returns(s3_object_output)
+      Aws::S3::Bucket.any_instance.expects(:object).once.with(message.document_name).returns(s3_object)
+
+      @blackboard.fetch(message)
     end
   end
 end

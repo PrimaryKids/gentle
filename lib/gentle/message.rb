@@ -6,15 +6,22 @@ module Gentle
     class MissingDocumentError < StandardError; end
     class MissingClientError < StandardError; end
 
-    attr_reader :client, :document, :xml
+    attr_reader :client, :document, :xml, :queue_message
 
     def initialize(options = {})
-      @xml = Nokogiri::XML::Document.parse(options[:xml]) if options[:xml]
+      @xml = options[:xml] ? Nokogiri::XML::Document.parse(options[:xml]) : nil
       @client = options[:client]
       @document = options[:document]
+      @queue_message = options[:queue_message]
+    end
+
+    def delete
+      @queue_message.delete if @queue_message
     end
 
     def to_xml
+      return @xml.to_xml if @xml
+
       builder = Nokogiri::XML::Builder.new do |xml|
         xml.EventMessage(attributes)
       end
@@ -22,11 +29,19 @@ module Gentle
     end
 
     def document_type
-      @document ? @document.type : @xml.css('EventMessage').first['DocumentType']
+      if @document
+        @document.type
+      elsif @xml
+        @xml.css('EventMessage').first['DocumentType']
+      end
     end
 
     def document_name
-      @document ? @document.filename : @xml.css('EventMessage').first['DocumentName']
+      if @document
+        @document.filename
+      elsif @xml
+        @xml.css('EventMessage').first['DocumentName']
+      end
     end
 
     def attributes

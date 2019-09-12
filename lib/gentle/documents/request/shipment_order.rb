@@ -24,6 +24,10 @@ module Gentle
         def initialize(options = {})
           @client   = options.fetch(:client)
           @shipment = options.fetch(:shipment)
+          @comments = options.fetch(:comments, nil) || @shipment.order.special_instructions
+          @notes = options.fetch(:notes)
+          @gift = options.fetch(:gift, false)
+          @item_filter = options.fetch(:item_filter, nil) || Proc.new { |line_item| true }
           @shipment_number = @shipment.number
         end
 
@@ -36,17 +40,23 @@ module Gentle
 
               xml.OrderHeader('OrderNumber' => @shipment_number,
                               'OrderType'   => order_type,
-                              'OrderDate'   => @shipment.created_at.utc.iso8601) {
+                              'OrderDate'   => date.utc.iso8601,
+                              'Gift'        => @gift) {
 
                 xml.Extension @shipment.order.number
 
-                xml.Comments @shipment.order.special_instructions
+                xml.Comments @comments
 
                 xml.ShipMode('Carrier'      => @shipment.shipping_method.carrier,
                              'ServiceLevel' => @shipment.shipping_method.service_level)
 
                 xml.ShipTo(ship_to_hash)
                 xml.BillTo(bill_to_hash)
+
+                @notes.each do |note|
+                  xml.Notes('NoteType': note[:note_type],
+                            'NoteValue': note[:note_value])
+                end
 
                 if @shipment.respond_to?(:value_added_services)
                   @shipment.value_added_services.each do |service|
@@ -92,7 +102,7 @@ module Gentle
         end
 
         def contain_parts?(item)
-          item.part_line_items && !item.part_line_items.empty?
+          item.respond_to?(:part_line_items) && !item.part_line_items.empty?
         end
 
         def add_item_parts(part_line_items)
@@ -114,7 +124,7 @@ module Gentle
         end
 
         def order_items
-          @shipment.order.line_items
+          @shipment.line_items.select(&@item_filter)
         end
 
         def order_type
@@ -122,7 +132,7 @@ module Gentle
         end
 
         def ship_address
-          @shipment.address
+          @shipment.order.ship_address
         end
 
         def bill_address
@@ -130,7 +140,7 @@ module Gentle
         end
 
         def full_name
-          @shipment.address.full_name
+          ship_address.full_name
         end
 
         def message
@@ -150,7 +160,7 @@ module Gentle
         end
 
         def date
-          @shipment.created_at
+          @shipment.order.completed_at
         end
 
         def filename
@@ -160,7 +170,6 @@ module Gentle
         def message_id
           SecureRandom.uuid
         end
-
       end
     end
   end

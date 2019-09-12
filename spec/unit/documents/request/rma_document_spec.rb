@@ -5,9 +5,11 @@ module Gentle
   module Documents
     module Request
       describe "RMADocument" do
+        include Configuration
         include Gentle::Documents::DocumentInterfaceTestcases
 
         before do
+          @client = Client.new(load_configuration)
           @order  = OrderDouble.example
           @rma    = RMADouble.example
           @config = RMADouble::DEFAULT_OPTIONS[:config]

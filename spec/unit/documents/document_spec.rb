@@ -28,9 +28,11 @@ module Gentle
   end
 
   describe "DocumentDouble" do
+    include Configuration
     include Documents::DocumentInterfaceTestcases
 
     before do
+      @client = Client.new(load_configuration)
       @object = DocumentDouble.new(
         :message_id => '1234567',
         :date => Time.new(2013, 04, 05, 12, 30, 15).utc,

@@ -22,7 +22,7 @@ end
 module Configuration
   def load_configuration
     test_credentials_file = ENV['HOME'] + '/.gentle/credentials.yml'
-    test_credentials_file = "spec/fixtures/credentials.yml" unless File.exists?(test_credentials_file)
+    test_credentials_file = "spec/fixtures/credentials.yml" unless File.exist?(test_credentials_file)
     YAML.load(File.open(test_credentials_file, 'rb'))
   end
 end
@@ -252,7 +252,7 @@ class OrderDouble
   end
 
   def type
-    @type || "SO"
+    @type ||= "SO"
   end
 end
 

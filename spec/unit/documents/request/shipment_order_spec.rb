@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'gentle/documents/request/shipment_order'
+require './spec/unit/documents/document_spec.rb'
 
 module Gentle
   module Documents
