@@ -27,6 +27,7 @@ module Gentle
           @comments = options.fetch(:comments, nil) || @shipment.order.special_instructions
           @notes = options.fetch(:notes)
           @gift = options.fetch(:gift, false)
+          @gift_wrap = options.fetch(:gift_wrap, false)
           @item_filter = options.fetch(:item_filter, nil) || Proc.new { |line_item| true }
           @shipment_number = @shipment.number
         end
@@ -57,6 +58,8 @@ module Gentle
                   xml.Notes('NoteType': note[:note_type],
                             'NoteValue': note[:note_value])
                 end
+              
+                xml.GiftWrap @gift_wrap
 
                 if @shipment.respond_to?(:value_added_services)
                   @shipment.value_added_services.each do |service|
