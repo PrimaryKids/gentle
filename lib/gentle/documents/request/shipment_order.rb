@@ -59,7 +59,7 @@ module Gentle
                             'NoteValue': note[:note_value])
                 end
               
-                xml.GiftWrap @gift_wrap
+                xml.GiftType "giftwrapped" if @gift_wrap
 
                 if @shipment.respond_to?(:value_added_services)
                   @shipment.value_added_services.each do |service|
